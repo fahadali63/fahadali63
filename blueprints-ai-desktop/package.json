@@ -7,7 +7,10 @@
     "start": "electron .",
     "test": "node --test test/engine.test.mjs",
     "test:e2e": "xvfb-run -a electron --no-sandbox --disable-gpu test/e2e/main.cjs",
-    "dist": "electron-builder"
+    "dist": "electron-builder",
+    "dist:win": "electron-builder --win",
+    "dist:linux": "electron-builder --linux",
+    "dist:mac": "electron-builder --mac"
   },
   "author": "fahadali63",
   "license": "MIT",
@@ -18,9 +21,51 @@
   "build": {
     "appId": "com.fahadali63.blueprintsai",
     "productName": "Blueprints AI Desktop",
-    "files": ["src/**/*", "package.json"],
-    "mac": { "category": "public.app-category.productivity" },
-    "win": { "target": "nsis" },
-    "linux": { "target": ["AppImage", "deb"], "category": "Office" }
-  }
+    "directories": {
+      "output": "dist",
+      "buildResources": "build"
+    },
+    "files": [
+      "src/**/*",
+      "package.json"
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "build/icon.png",
+      "signAndEditExecutable": false
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "perMachine": false,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "artifactName": "Blueprints-AI-Desktop-Setup-${version}.${ext}"
+    },
+    "linux": {
+      "target": [
+        "AppImage",
+        "deb"
+      ],
+      "icon": "build/icon.png",
+      "category": "Office",
+      "maintainer": "fahadali63 <fahad@innotec-es.com>"
+    },
+    "mac": {
+      "category": "public.app-category.productivity",
+      "target": [
+        "dmg"
+      ],
+      "icon": "build/icon.png"
+    },
+    "publish": null
+  },
+  "homepage": "https://github.com/fahadali63/fahadali63/tree/ccr-dd8046aa-vcgelo/blueprints-ai-desktop"
 }
